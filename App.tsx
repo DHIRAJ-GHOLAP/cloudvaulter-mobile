@@ -26,6 +26,7 @@ import BillingScreen from './src/screens/main/BillingScreen';
 import ProfileScreen from './src/screens/main/ProfileScreen';
 import DeveloperScreen from './src/screens/main/DeveloperScreen';
 import FilePreviewScreen from './src/screens/main/FilePreviewScreen';
+import EmergencyVaultScreen from './src/screens/main/EmergencyVaultScreen';
 
 export type AuthStackParamList = {
   Login: undefined;
@@ -43,6 +44,7 @@ export type MainTabParamList = {
 export type RootStackParamList = {
   MainTabs: undefined;
   Developer: undefined;
+  EmergencyVault: undefined;
   FilePreview: { file: any };
 };
 
@@ -132,6 +134,11 @@ function MainNavigator() {
           headerTintColor: colors.foreground,
           headerBackTitle: 'Back',
         }}
+      />
+      <RootStack.Screen
+        name="EmergencyVault"
+        component={EmergencyVaultScreen}
+        options={{ headerShown: false }}
       />
       <RootStack.Screen
         name="FilePreview"

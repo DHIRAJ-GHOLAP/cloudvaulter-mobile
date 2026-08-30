@@ -249,3 +249,48 @@ export const userApi = {
     return mapUser(data);
   },
 };
+
+// ─── Life Vault & Emergency Vault API ─────────────────────────────────────────
+
+export const vaultApi = {
+  getCategories: async () => {
+    const { data } = await apiClient.get('/vault/categories');
+    return data;
+  },
+
+  getEmergencyVault: async () => {
+    const { data } = await apiClient.get('/vault/emergency');
+    return data;
+  },
+
+  setupEmergencyVault: async (pin: string, emergencyNote?: string) => {
+    const { data } = await apiClient.post('/vault/emergency/setup', { pin, emergency_note: emergencyNote });
+    return data;
+  },
+
+  addTrustedContact: async (contact: { name: string; relationship: string; phone?: string; email?: string }) => {
+    const { data } = await apiClient.post('/vault/emergency/contacts', contact);
+    return data;
+  },
+
+  removeTrustedContact: async (contactId: string) => {
+    const { data } = await apiClient.delete(`/vault/emergency/contacts/${contactId}`);
+    return data;
+  },
+
+  getExpiries: async () => {
+    const { data } = await apiClient.get('/vault/expiries');
+    return data;
+  },
+
+  aiSearch: async (query: string, category?: string, isEmergencyOnly?: boolean) => {
+    const { data } = await apiClient.post('/vault/ai-search', { query, category, is_emergency_only: isEmergencyOnly });
+    return data;
+  },
+
+  updateMetadata: async (fileId: string, metadata: any) => {
+    const { data } = await apiClient.patch(`/vault/files/${fileId}/metadata`, metadata);
+    return data;
+  },
+};
+

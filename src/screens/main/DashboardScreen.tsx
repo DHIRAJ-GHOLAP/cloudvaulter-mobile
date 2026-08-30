@@ -192,11 +192,37 @@ export default function DashboardScreen({ navigation }: any) {
           </View>
         </View>
 
+        {/* Emergency Vault Card Banner */}
+        <TouchableOpacity
+          style={[styles.emergencyBanner, { borderColor: '#FF6B00' }]}
+          onPress={() => navigation.navigate('EmergencyVault')}
+          activeOpacity={0.88}
+        >
+          <View style={styles.emergencyIconWrap}>
+            <Ionicons name="shield-checkmark" size={26} color="#FF6B00" />
+          </View>
+          <View style={{ flex: 1, marginLeft: 12 }}>
+            <Text style={[styles.emergencyTitle, { color: colors.foreground }]}>Emergency Life Vault</Text>
+            <Text style={[styles.emergencySub, { color: colors.mutedForeground }]}>
+              QR card, 4-digit PIN & first responder recovery
+            </Text>
+          </View>
+          <Ionicons name="chevron-forward" size={20} color="#FF6B00" />
+        </TouchableOpacity>
+
         {/* Quick Actions Row */}
         <View style={styles.sectionHeader}>
           <Text style={[styles.sectionTitle, { color: colors.foreground }]}>Quick Actions</Text>
         </View>
         <View style={styles.quickActionsRow}>
+          <TouchableOpacity
+            style={[styles.quickActionBtn, { backgroundColor: colors.card, borderColor: colors.border }]}
+            onPress={() => navigation.navigate('EmergencyVault')}
+          >
+            <Ionicons name="shield-checkmark" size={24} color="#FF6B00" />
+            <Text style={[styles.quickActionText, { color: colors.foreground }]}>Emergency</Text>
+          </TouchableOpacity>
+
           <TouchableOpacity
             style={[styles.quickActionBtn, { backgroundColor: colors.card, borderColor: colors.border }]}
             onPress={() => navigation.navigate('Files', { openUpload: true })}
@@ -210,7 +236,7 @@ export default function DashboardScreen({ navigation }: any) {
             onPress={() => navigation.navigate('Files')}
           >
             <Ionicons name="folder" size={24} color="#0EA5E9" />
-            <Text style={[styles.quickActionText, { color: colors.foreground }]}>All Files</Text>
+            <Text style={[styles.quickActionText, { color: colors.foreground }]}>Files</Text>
           </TouchableOpacity>
 
           <TouchableOpacity
@@ -219,14 +245,6 @@ export default function DashboardScreen({ navigation }: any) {
           >
             <Ionicons name="card" size={24} color="#16A34A" />
             <Text style={[styles.quickActionText, { color: colors.foreground }]}>Billing</Text>
-          </TouchableOpacity>
-
-          <TouchableOpacity
-            style={[styles.quickActionBtn, { backgroundColor: colors.card, borderColor: colors.border }]}
-            onPress={() => navigation.navigate('Developer')}
-          >
-            <Ionicons name="key" size={24} color="#7C3AED" />
-            <Text style={[styles.quickActionText, { color: colors.foreground }]}>API Keys</Text>
           </TouchableOpacity>
         </View>
 
@@ -496,5 +514,30 @@ const styles = StyleSheet.create({
   },
   fileMeta: {
     fontSize: 12,
+  },
+  emergencyBanner: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    padding: 14,
+    borderRadius: 16,
+    borderWidth: 1.5,
+    backgroundColor: 'rgba(255,107,0,0.08)',
+    marginBottom: 20,
+  },
+  emergencyIconWrap: {
+    width: 44,
+    height: 44,
+    borderRadius: 12,
+    backgroundColor: 'rgba(255,107,0,0.15)',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  emergencyTitle: {
+    fontSize: 15,
+    fontWeight: '800',
+  },
+  emergencySub: {
+    fontSize: 12,
+    marginTop: 2,
   },
 });
