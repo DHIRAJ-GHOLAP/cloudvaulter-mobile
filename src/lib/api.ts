@@ -217,21 +217,21 @@ export const pricingApi = {
 
 export const developerApi = {
   getApiKeys: async () => {
-    const { data } = await apiClient.get('/developer/api-keys');
-    return data as { keys: any[] };
+    const { data } = await apiClient.get('/dev/api-keys');
+    return data as any[];
   },
 
-  createApiKey: async (name: string) => {
-    const { data } = await apiClient.post('/developer/api-keys', { name });
+  createApiKey: async (name: string, scopes: string[] = ['storage.read', 'storage.write', 'files.upload']) => {
+    const { data } = await apiClient.post('/dev/api-keys', { name, scopes });
     return data;
   },
 
   deleteApiKey: async (id: string) => {
-    await apiClient.delete(`/developer/api-keys/${id}`);
+    await apiClient.delete(`/dev/api-keys/${id}`);
   },
 
   getUsage: async () => {
-    const { data } = await apiClient.get('/developer/usage');
+    const { data } = await apiClient.get('/dev/usage');
     return data;
   },
 };
