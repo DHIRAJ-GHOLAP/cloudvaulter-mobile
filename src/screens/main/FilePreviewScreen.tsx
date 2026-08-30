@@ -15,12 +15,14 @@ import * as FileSystem from 'expo-file-system';
 import * as Sharing from 'expo-sharing';
 import * as WebBrowser from 'expo-web-browser';
 import { useTheme } from '../../context/ThemeContext';
+import { useAuth } from '../../context/AuthContext';
 import { filesApi } from '../../lib/api';
 import { formatBytes, formatDate, getFileIcon, getFileColor } from '../../lib/utils';
 import { Colors } from '../../constants/colors';
 
 export default function FilePreviewScreen() {
   const { colors, isDark } = useTheme();
+  const { user } = useAuth();
   const route = useRoute<any>();
   const navigation = useNavigation<any>();
 
@@ -40,11 +42,12 @@ export default function FilePreviewScreen() {
   const contentType = file.content_type || file.type || '';
   const isImage = contentType.startsWith('image/');
   const isVideo = contentType.startsWith('video/');
-  const isPdf = contentType.includes('pdf');
+
+  const hasBalance = user?.walletBalance === undefined || user.walletBalance > 0;
 
   useEffect(() => {
     const fetchSignedUrl = async () => {
-      if (!fileId) {
+      if (!fileId || !hasBalance) {
         setLoadingUrl(false);
         return;
       }
@@ -60,9 +63,17 @@ export default function FilePreviewScreen() {
       }
     };
     fetchSignedUrl();
-  }, [fileId]);
+  }, [fileId, hasBalance]);
 
   const handleDownload = async () => {
+    if (!hasBalance) {
+      Alert.alert('Top Up Required', 'Your wallet balance is ₹0. Please add balance to download files.', [
+        { text: 'Cancel', style: 'cancel' },
+        { text: 'Top Up', onPress: () => navigation.navigate('Billing') },
+      ]);
+      return;
+    }
+
     if (!signedUrl) {
       Alert.alert('Error', 'Download link is not available.');
       return;
@@ -85,6 +96,14 @@ export default function FilePreviewScreen() {
   };
 
   const handleShare = async () => {
+    if (!hasBalance) {
+      Alert.alert('Top Up Required', 'Your wallet balance is ₹0. Please add balance to share files.', [
+        { text: 'Cancel', style: 'cancel' },
+        { text: 'Top Up', onPress: () => navigation.navigate('Billing') },
+      ]);
+      return;
+    }
+
     if (signedUrl) {
       try {
         await Sharing.shareAsync(signedUrl);
@@ -98,7 +117,7 @@ export default function FilePreviewScreen() {
   const iconColor = getFileColor(contentType);
 
   return (
-    <SafeAreaView style={[styles.container, { backgroundColor: colors.background }]}>
+    <SafeAreaView style={[styles.container, { backgroundColor: colors.background }]} edges={['top']}>
       {/* Top App Bar */}
       <View style={[styles.header, { backgroundColor: colors.card, borderBottomColor: colors.border }]}>
         <TouchableOpacity
@@ -131,7 +150,24 @@ export default function FilePreviewScreen() {
 
       {/* Main Preview Content */}
       <View style={styles.content}>
-        {loadingUrl ? (
+        {!hasBalance ? (
+          <View style={[styles.card, { backgroundColor: colors.card, borderColor: colors.border }]}>
+            <View style={[styles.iconContainer, { backgroundColor: 'rgba(255, 107, 0, 0.12)' }]}>
+              <Ionicons name="lock-closed" size={44} color={Colors.primary} />
+            </View>
+            <Text style={[styles.fileName, { color: colors.foreground }]}>Wallet Top-Up Required</Text>
+            <Text style={[styles.fileType, { color: colors.mutedForeground, textAlign: 'center', marginBottom: 20 }]}>
+              Your wallet balance is ₹0.00. High-resolution previews, media streaming, and downloads require active wallet credits.
+            </Text>
+            <TouchableOpacity
+              style={[styles.primaryActionBtn, { backgroundColor: Colors.primary }]}
+              onPress={() => navigation.navigate('Billing')}
+            >
+              <Ionicons name="card-outline" size={20} color="#FFFFFF" style={{ marginRight: 8 }} />
+              <Text style={styles.primaryActionBtnText}>Top Up Wallet</Text>
+            </TouchableOpacity>
+          </View>
+        ) : loadingUrl ? (
           <ActivityIndicator size="large" color={Colors.primary} />
         ) : isImage && signedUrl ? (
           <Image

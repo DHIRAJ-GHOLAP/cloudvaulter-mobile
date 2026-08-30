@@ -76,6 +76,7 @@ export default function ProfileScreen() {
 
         <View style={styles.section}>
           {renderSectionHeader('ACCOUNT')}
+          {renderRow('shield-checkmark-outline', 'Emergency Life Vault & QR Card', () => navigation.navigate('EmergencyVault'))}
           {renderRow('person-outline', 'Edit Profile', () => Alert.alert('Edit Profile', 'Profile editing is active on your web dashboard.'))}
           {renderRow('lock-closed-outline', 'Change Password', () => Alert.alert('Change Password', 'Use the password reset link on login or web dashboard.'))}
           {renderRow('mail-outline', 'Email Preferences', () => Alert.alert('Email Preferences', 'Email notifications are enabled.'))}

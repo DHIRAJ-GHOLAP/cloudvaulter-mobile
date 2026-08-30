@@ -99,7 +99,7 @@ export default function DashboardScreen({ navigation }: any) {
         <View style={styles.header}>
           <View>
             <Text style={[styles.greeting, { color: colors.foreground }]}>
-              Hello, {user?.name || 'User'}! 👋
+              Hello, {user?.name || 'User'}!
             </Text>
             <Text style={[styles.dateText, { color: colors.mutedForeground }]}>{todayStr}</Text>
           </View>

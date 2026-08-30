@@ -188,7 +188,7 @@ export default function EmergencyVaultScreen({ navigation }: any) {
               <View>
                 <Text style={[styles.cardTitle, { color: colors.foreground }]}>Emergency PIN</Text>
                 <Text style={[styles.cardSub, { color: colors.mutedForeground }]}>
-                  {vaultData?.is_pin_configured ? '🔒 Protected (Active)' : '⚠️ PIN Not Configured'}
+                  {vaultData?.is_pin_configured ? 'Protected (Active)' : 'PIN Not Configured'}
                 </Text>
               </View>
               <TouchableOpacity
