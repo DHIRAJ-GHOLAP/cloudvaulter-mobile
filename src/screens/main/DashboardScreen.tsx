@@ -217,6 +217,14 @@ export default function DashboardScreen({ navigation }: any) {
         <View style={styles.quickActionsRow}>
           <TouchableOpacity
             style={[styles.quickActionBtn, { backgroundColor: colors.card, borderColor: colors.border }]}
+            onPress={() => navigation.navigate('Developer')}
+          >
+            <Ionicons name="code-slash" size={24} color="#7C3AED" />
+            <Text style={[styles.quickActionText, { color: colors.foreground }]}>Dev API</Text>
+          </TouchableOpacity>
+
+          <TouchableOpacity
+            style={[styles.quickActionBtn, { backgroundColor: colors.card, borderColor: colors.border }]}
             onPress={() => navigation.navigate('EmergencyVault')}
           >
             <Ionicons name="shield-checkmark" size={24} color="#FF6B00" />
@@ -229,14 +237,6 @@ export default function DashboardScreen({ navigation }: any) {
           >
             <Ionicons name="cloud-upload" size={24} color={Colors.primary} />
             <Text style={[styles.quickActionText, { color: colors.foreground }]}>Upload</Text>
-          </TouchableOpacity>
-
-          <TouchableOpacity
-            style={[styles.quickActionBtn, { backgroundColor: colors.card, borderColor: colors.border }]}
-            onPress={() => navigation.navigate('Files')}
-          >
-            <Ionicons name="folder" size={24} color="#0EA5E9" />
-            <Text style={[styles.quickActionText, { color: colors.foreground }]}>Files</Text>
           </TouchableOpacity>
 
           <TouchableOpacity

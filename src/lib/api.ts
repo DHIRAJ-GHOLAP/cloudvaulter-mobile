@@ -221,13 +221,74 @@ export const developerApi = {
     return data as any[];
   },
 
-  createApiKey: async (name: string, scopes: string[] = ['storage.read', 'storage.write', 'files.upload']) => {
-    const { data } = await apiClient.post('/dev/api-keys', { name, scopes });
+  createApiKey: async (payload: {
+    name: string;
+    key_type?: string;
+    environment?: string;
+    scopes?: string[];
+    budget_limit_inr?: number;
+  }) => {
+    const { data } = await apiClient.post('/dev/api-keys', {
+      name: payload.name,
+      key_type: payload.key_type || 'secret',
+      environment: payload.environment || 'production',
+      scopes: payload.scopes || ['storage.read', 'storage.write', 'files.upload'],
+      budget_limit_inr: payload.budget_limit_inr,
+    });
     return data;
   },
 
   deleteApiKey: async (id: string) => {
     await apiClient.delete(`/dev/api-keys/${id}`);
+  },
+
+  getBuckets: async () => {
+    const { data } = await apiClient.get('/dev/buckets');
+    return data as any[];
+  },
+
+  createBucket: async (payload: {
+    name: string;
+    description?: string;
+    visibility?: string;
+    max_file_size_mb?: number;
+    auto_ocr?: boolean;
+    encryption?: boolean;
+  }) => {
+    const { data } = await apiClient.post('/dev/buckets', payload);
+    return data;
+  },
+
+  deleteBucket: async (id: string) => {
+    await apiClient.delete(`/dev/buckets/${id}`);
+  },
+
+  getTemplates: async () => {
+    const { data } = await apiClient.get('/dev/templates');
+    return data as any[];
+  },
+
+  getWebhooks: async () => {
+    const { data } = await apiClient.get('/dev/webhooks');
+    return data as any[];
+  },
+
+  createWebhook: async (payload: {
+    url: string;
+    events: string[];
+    description?: string;
+  }) => {
+    const { data } = await apiClient.post('/dev/webhooks', payload);
+    return data;
+  },
+
+  deleteWebhook: async (id: string) => {
+    await apiClient.delete(`/dev/webhooks/${id}`);
+  },
+
+  getLogs: async (limit = 50) => {
+    const { data } = await apiClient.get('/dev/logs', { params: { limit } });
+    return data as any[];
   },
 
   getUsage: async () => {
